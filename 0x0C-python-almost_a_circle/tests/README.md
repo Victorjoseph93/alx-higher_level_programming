@@ -1,1 +1,1 @@
-A README file for the test directory
+Not an empty directory
