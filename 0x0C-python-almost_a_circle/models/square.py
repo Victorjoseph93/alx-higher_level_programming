@@ -1,83 +1,87 @@
 #!/usr/bin/python3
-"""Defines a square class."""
+"""This module defines the class ``Square``.
+"""
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
-    """Represent a square."""
-
+    """This class defines a Square class that's inherited from
+    the Rectangle class.
+    """
     def __init__(self, size, x=0, y=0, id=None):
-        """Initialize a new Square.
-
+        """This method instantiates a Square object with the attributes
+        size, x, y, and id.
         Args:
-            size (int): The size of the new Square.
-            x (int): The x coordinate of the new Square.
-            y (int): The y coordinate of the new Square.
-            id (int): The identity of the new Square.
+            size (int): the size of a square object.
+            x (int): The x offset of a square object.
+            y (int): the y offset of a square object.
+            id (int): the id of a square object.
         """
-        super().__init__(size, size, x, y, id)
+        super(Square, self).__init__(size, size, x, y, id)
+
+    def __str__(self):
+        """This method prints a string representation of a Square object.
+        """
+        return ("[Square] ({}) {}/{} - {}".format(self.id, self.x, self.y,
+                                                  self.width))
 
     @property
     def size(self):
-        """Get/set the size of the Square."""
+        """This is a getter method for the size attribute of a square object.
+        """
         return self.width
 
     @size.setter
     def size(self, value):
+        """This is the setter method for the size attribute
+        for a square object.
+        Args:
+            value (int): the value that size will be assigned to.
+        """
+        if (type(value) is not int):
+            raise TypeError("width must be an integer")
+        elif (value <= 0):
+            raise ValueError("width must be > 0")
         self.width = value
         self.height = value
 
     def update(self, *args, **kwargs):
-        """Update the Square.
-
+        """This method updates the values of a Square Object's attributes.
         Args:
-            *args (ints): New attribute values.
-                - 1st argument represents id attribute
-                - 2nd argument represents size attribute
-                - 3rd argument represents x attribute
-                - 4th argument represents y attribute
-            **kwargs (dict): New key/value pairs of attributes.
+            args[0] (int): changes the id attribute.
+            args[1] (int): changes the size attribute.
+            args[2] (int): changes the x attribute.
+            args[3] (int): changes the y attribute.
         """
-        if args and len(args) != 0:
-            a = 0
+        if (args) and (len(args) != 0):
+            count = 0
             for arg in args:
-                if a == 0:
-                    if arg is None:
-                        self.__init__(self.size, self.x, self.y)
-                    else:
-                        self.id = arg
-                elif a == 1:
-                    self.size = arg
-                elif a == 2:
+                if count == 0:
+                    self.id = arg
+                elif count == 1:
+                    self.width = arg
+                    self.height = arg
+                elif count == 2:
                     self.x = arg
-                elif a == 3:
+                elif count == 3:
                     self.y = arg
-                a += 1
-
-        elif kwargs and len(kwargs) != 0:
-            for k, v in kwargs.items():
-                if k == "id":
-                    if v is None:
-                        self.__init__(self.size, self.x, self.y)
-                    else:
-                        self.id = v
-                elif k == "size":
-                    self.size = v
-                elif k == "x":
-                    self.x = v
-                elif k == "y":
-                    self.y = v
+                count += 1
+        else:
+            for arg in kwargs:
+                if arg == 'id':
+                    self.id = kwargs[arg]
+                elif arg == 'size':
+                    self.width = kwargs[arg]
+                    self.height = kwargs[arg]
+                elif arg == 'x':
+                    self.x = kwargs[arg]
+                elif arg == 'y':
+                    self.y = kwargs[arg]
 
     def to_dictionary(self):
-        """Return the dictionary representation of the Square."""
-        return {
-            "id": self.id,
-            "size": self.width,
-            "x": self.x,
-            "y": self.y
-        }
-
-    def __str__(self):
-        """Return the print() and str() representation of a Square."""
-        return "[Square] ({}) {}/{} - {}".format(self.id, self.x, self.y,
-                                                 self.width)
+        """This method returns a dictionary representation of a
+        Square object.
+        """
+        square_dic = dict(id=self.id, size=self.size,
+                          x=self.x, y=self.y)
+        return (square_dic)
